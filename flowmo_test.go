@@ -106,21 +106,12 @@ func Test_MaxFlow_sinkNotFound(t *testing.T) {
 	assert.ErrorIs(t, err, flowmoerrors.ErrNotFound)
 }
 
-func Test_IncomingCapacityByNode_nodeNotFound(t *testing.T) {
+func Test_FlowByNode_nodeNotFound(t *testing.T) {
 	f := New()
 
 	_ = f.AddEdge("a", "b", 10)
 
-	_, err := f.IncomingCapacityByNode("x")
-	assert.ErrorIs(t, err, flowmoerrors.ErrNotFound)
-}
-
-func Test_OutgoingCapacityByNode_nodeNotFound(t *testing.T) {
-	f := New()
-
-	_ = f.AddEdge("a", "b", 10)
-
-	_, err := f.OutgoingCapacityByNode("x")
+	_, err := f.FlowByNode("x")
 	assert.ErrorIs(t, err, flowmoerrors.ErrNotFound)
 }
 
@@ -144,23 +135,13 @@ func Test_CompleteWorkflow(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 25, maxFlow)
 
-	// Verify incoming capacities
-	incomingB, _ := f.IncomingCapacityByNode("b")
-	assert.Equal(t, 15, incomingB)
-
-	incomingC, _ := f.IncomingCapacityByNode("c")
-	assert.Equal(t, 15, incomingC)
-
-	incomingD, _ := f.IncomingCapacityByNode("d")
-	assert.Equal(t, 25, incomingD)
-
-	// Verify outgoing capacities
-	outgoingA, _ := f.OutgoingCapacityByNode("a")
+	// Verify flow
+	outgoingA, _ := f.FlowByNode("a")
 	assert.Equal(t, 25, outgoingA)
 
-	outgoingB, _ := f.OutgoingCapacityByNode("b")
+	outgoingB, _ := f.FlowByNode("b")
 	assert.Equal(t, 15, outgoingB)
 
-	outgoingC, _ := f.OutgoingCapacityByNode("c")
+	outgoingC, _ := f.FlowByNode("c")
 	assert.Equal(t, 15, outgoingC)
 }
