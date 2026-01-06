@@ -106,7 +106,7 @@ func Test_MaxFlow_sinkNotFound(t *testing.T) {
 	assert.ErrorIs(t, err, flowmoerrors.ErrNotFound)
 }
 
-func Test_OutgoingFlowByNode_nodeNotFound(t *testing.T) {
+func Test_FlowByNode_nodeNotFound(t *testing.T) {
 	f := New()
 
 	_ = f.AddEdge("a", "b", 10)
