@@ -66,7 +66,7 @@ func Test_AddEdge_happyCase(t *testing.T) {
 	assert.Equal(t, 0, residualEdge.initialCapacity)
 }
 
-func Test_IncomingFlowByNode_beforeMaxFlow_shouldReturnZero(t *testing.T) {
+func Test_FlowByNode_beforeMaxFlow_shouldReturnZero(t *testing.T) {
 	net := New()
 	from := net.AddNode()
 	to := net.AddNode()
@@ -74,37 +74,11 @@ func Test_IncomingFlowByNode_beforeMaxFlow_shouldReturnZero(t *testing.T) {
 
 	_ = net.AddEdge(from, to, capacity)
 
-	incoming, _ := net.IncomingFlowByNode(to)
-	assert.Equal(t, 0, incoming)
-}
-
-func Test_IncomingFlowByNode_afterMaxFlow_shouldReturnFlow(t *testing.T) {
-	net := New()
-	from := net.AddNode()
-	to := net.AddNode()
-	capacity := 10
-
-	_ = net.AddEdge(from, to, capacity)
-
-	_, _ = net.MaxFlow(from, to)
-
-	incoming, _ := net.IncomingFlowByNode(to)
-	assert.Equal(t, capacity, incoming)
-}
-
-func Test_OutgoingFlowByNode_beforeMaxFlow_shouldReturnZero(t *testing.T) {
-	net := New()
-	from := net.AddNode()
-	to := net.AddNode()
-	capacity := 10
-
-	_ = net.AddEdge(from, to, capacity)
-
-	outgoing, _ := net.OutgoingFlowByNode(from)
+	outgoing, _ := net.FlowByNode(from)
 	assert.Equal(t, 0, outgoing)
 }
 
-func Test_OutgoingFlowByNode_afterMaxFlow_shouldReturnFlow(t *testing.T) {
+func Test_FlowByNode_afterMaxFlow_shouldReturnFlow(t *testing.T) {
 	net := New()
 	from := net.AddNode()
 	to := net.AddNode()
@@ -114,7 +88,7 @@ func Test_OutgoingFlowByNode_afterMaxFlow_shouldReturnFlow(t *testing.T) {
 
 	_, _ = net.MaxFlow(from, to)
 
-	outgoing, _ := net.OutgoingFlowByNode(from)
+	outgoing, _ := net.FlowByNode(from)
 	assert.Equal(t, capacity, outgoing)
 }
 
@@ -132,20 +106,11 @@ func Test_AddEdge_selfLoop_shouldWork(t *testing.T) {
 	assert.Equal(t, 0, flow)
 }
 
-func Test_IncomingFlowByNode_invalidNode_shouldReturnError(t *testing.T) {
+func Test_FlowByNode_invalidNode_shouldReturnError(t *testing.T) {
 	net := New()
 	_ = net.AddNode()
 
-	incoming, err := net.IncomingFlowByNode(5)
-	assert.ErrorIs(t, err, flowmoerrors.ErrInvalidArgument)
-	assert.Equal(t, -1, incoming)
-}
-
-func Test_OutgoingFlowByNode_invalidNode_shouldReturnError(t *testing.T) {
-	net := New()
-	_ = net.AddNode()
-
-	outgoing, err := net.OutgoingFlowByNode(5)
+	outgoing, err := net.FlowByNode(5)
 	assert.ErrorIs(t, err, flowmoerrors.ErrInvalidArgument)
 	assert.Equal(t, -1, outgoing)
 }

@@ -37,9 +37,9 @@ func main() {
 
     fmt.Printf("Maximum flow: %d\n", maxFlow)
 
-    // Query node capacities
-    incoming, _ := f.IncomingCapacityByNode("sink")
-    fmt.Printf("Incoming capacity to sink: %d\n", incoming)
+    // Query node flow
+    flow, _ := f.FlowByNode("a")
+    fmt.Printf("Outgoing flow from a: %d\n", flow)
 }
 ```
 
@@ -54,11 +54,8 @@ Adds a directed edge from `from` to `to` with the specified capacity. Nodes are 
 ### `MaxFlow(source, sink Node) (int, error)`
 Computes the maximum flow from the source node to the sink node using Dinic's algorithm.
 
-### `IncomingCapacityByNode(node Node) (int, error)`
-Returns the total incoming flow capacity for the specified node.
-
-### `OutgoingCapacityByNode(node Node) (int, error)`
-Returns the total outgoing flow capacity for the specified node.
+### `FlowByNode(node Node) (int, error)`
+Returns the total outgoing flow (used capacity) from the specified node. This method should be called after MaxFlow has been computed.
 
 ## License
 

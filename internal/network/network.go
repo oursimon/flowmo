@@ -58,32 +58,7 @@ func (net *Network) MaxFlow(source, sink int) (int, error) {
 	return maxFlow(net, source, sink)
 }
 
-// nolint:gocyclo
-func (net *Network) IncomingFlowByNode(node int) (int, error) {
-	invalidNode := node < 0 || node >= len(net.adj)
-	if invalidNode {
-		return -1, fmt.Errorf(
-			"node %d: %w",
-			node,
-			flowmoerrors.ErrInvalidArgument,
-		)
-	}
-
-	in := 0
-	for _, edges := range net.adj {
-		for _, e := range edges {
-			if e.to != node || e.isResidual() {
-				continue
-			}
-
-			in += e.initialCapacity - e.capacity
-		}
-	}
-
-	return in, nil
-}
-
-func (net *Network) OutgoingFlowByNode(node int) (int, error) {
+func (net *Network) FlowByNode(node int) (int, error) {
 	invalidNode := node < 0 || node >= len(net.adj)
 	if invalidNode {
 		return -1, fmt.Errorf(

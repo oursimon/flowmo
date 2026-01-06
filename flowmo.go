@@ -75,27 +75,7 @@ func (f *Flowmo) MaxFlow(source, sink Node) (int, error) {
 	return f.network.MaxFlow(sourceIndex, sinkIndex)
 }
 
-// IncomingCapacityByNode returns the total incoming flow (used capacity) to the specified node.
-// This represents the sum of all flow that has been pushed into the node across all incoming edges.
-// This method should be called after MaxFlow has been computed.
-//
-// Returns the total incoming flow and nil error on success.
-// Returns -1 and an error if:
-//   - Node does not exist (ErrNotFound)
-func (f *Flowmo) IncomingCapacityByNode(node Node) (int, error) {
-	idx, exists := f.indexByNode[node]
-	if !exists {
-		return -1, fmt.Errorf(
-			"node %q: %w",
-			node,
-			flowmoerrors.ErrNotFound,
-		)
-	}
-
-	return f.network.IncomingFlowByNode(idx)
-}
-
-// OutgoingCapacityByNode returns the total outgoing flow
+// FlowByNode returns the total outgoing flow
 // (used capacity) from the specified node.
 // This represents the sum of all flow that has been pushed out of
 // the node across all outgoing edges.
@@ -104,7 +84,7 @@ func (f *Flowmo) IncomingCapacityByNode(node Node) (int, error) {
 // Returns the total outgoing flow and nil error on success.
 // Returns -1 and an error if:
 //   - Node does not exist (ErrNotFound)
-func (f *Flowmo) OutgoingCapacityByNode(node Node) (int, error) {
+func (f *Flowmo) FlowByNode(node Node) (int, error) {
 	idx, exists := f.indexByNode[node]
 	if !exists {
 		return -1, fmt.Errorf(
@@ -114,7 +94,7 @@ func (f *Flowmo) OutgoingCapacityByNode(node Node) (int, error) {
 		)
 	}
 
-	return f.network.OutgoingFlowByNode(idx)
+	return f.network.FlowByNode(idx)
 }
 
 func (f *Flowmo) addNode(node Node) (int, error) {

@@ -25,18 +25,11 @@ func main() {
 
 	fmt.Printf("Max flow from 'a' to 'b': %d\n", flow)
 
-	// Query incoming and outgoing capacities for specific nodes.
-	incoming, err := f.IncomingCapacityByNode("b")
+	// Query the outgoing flow for specific nodes.
+	outgoing, err := f.FlowByNode("c")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("Incoming capacity to 'b': %d\n", incoming)
-
-	outgoing, err := f.OutgoingCapacityByNode("c")
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Outgoing capacity from 'c': %d\n", outgoing)
+	fmt.Printf("Outgoing flow from 'c': %d\n", outgoing)
 }
